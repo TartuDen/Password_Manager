@@ -73,36 +73,18 @@ class UI():
         ps = self.password_entry.get()
         if self.validator(wb) and self.validator(em) and self.validator(ps):
             self.database(f"{wb} | {em} | {ps}")
-        def deleter():
-            self.entry_email.delete(0,END)
-            self.entry_website.delete(0,END)
-            self.password_entry.delete(0,END)
-        deleter()
-
     
     def password_generator(self):
         l1="abcdefghijklmnopqrstuvwxqzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*)(0123456789"
         new_pass = ""
         for i in range(7):
-            new_pass+=random.choice(l1)
+            new_pass = new_pass + random.choice(l1)
         self.password_entry.delete(0,END)
         self.password_entry.insert(0,new_pass)
     
     def database(self,dataToSave):
         saveClass = ToSave(data_to_be_added =  dataToSave)
         saveClass.add_data()
-
-
-
-
-new_run=UI()
-
-
-
-
-
-
-
 
 
 
