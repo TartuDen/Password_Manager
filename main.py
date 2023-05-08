@@ -19,9 +19,12 @@ class UI():
         website_label = Label(text="Website: ",background=self.basic_color)
         website_label.grid(row=3, column=1, padx=10, pady=10, sticky="w")
 
-        self.entry_website = Entry(width=40)
-        self.entry_website.grid(row=3, column=2, columnspan=2, padx=10, pady=10)
+        self.entry_website = Entry(width=17)
+        self.entry_website.grid(row=3, column=2, padx=10, pady=10)
         self.entry_website.focus_set()
+
+        self.search_button = Button(text = "search",command=self.to_search)
+        self.search_button.grid(row=3,column=3)
 
 
         email_user_label = Label(text="Email/Username: ",background=self.basic_color)
@@ -48,7 +51,7 @@ class UI():
     def popup_window(self,message):
         popup = Toplevel()
         popup.title("Popup Window")
-        popup.geometry("200x100")
+        popup.geometry("200x120")
         popup_label = Label(popup, text=message)
         popup_label.pack(pady=20)
         close_button = Button(popup, text="Close", command=popup.destroy)
@@ -91,6 +94,19 @@ class UI():
     def database(self,dataToSave):
         saveClass = ToSave(data_to_be_added =  dataToSave)
         saveClass.add_data()
+    
+    def to_search(self):
+        text_from_etry = self.entry_website.get()
+        read_from_db = ToSave(data_to_be_added=None)
+        data_from_db = read_from_db.read_data()
+        # print(data_from_db.split("\n"))
+
+        for d in data_from_db.split("\n"):
+            if text_from_etry in d or text_from_etry.capitalize() in d or text_from_etry.upper() in d or text_from_etry.lower() in d:
+                d=d.split(" | ")
+                answer = f"Website: {d[0]}\nEmail: {d[1]}\nPassword: {d[2]}"
+                self.popup_window(answer)
+                break
 
 
 
