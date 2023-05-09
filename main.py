@@ -31,6 +31,7 @@ class UI():
         email_user_label.grid(row=4, column=1, padx=10, pady=10, sticky="w")
 
         self.entry_email = Entry(width=40)
+        self.entry_email.insert(0,"denver@gmail.com")
         self.entry_email.grid(row=4, column=2, columnspan=2, padx=10, pady=10)
 
         pasword_label = Label(text="Password: ",background=self.basic_color)
@@ -74,10 +75,16 @@ class UI():
         wb = self.entry_website.get()
         em = self.entry_email.get()
         ps = self.password_entry.get()
+        new_data = {
+            wb: {
+                "email": em,
+                "password": ps
+            }
+        }
         if self.validator(wb) and self.validator(em) and self.validator(ps):
-            self.database(f"{wb} | {em} | {ps}")
+            self.database(new_data)
         def deleter():
-            self.entry_email.delete(0,END)
+            # self.entry_email.delete(0,END)
             self.entry_website.delete(0,END)
             self.password_entry.delete(0,END)
         deleter()
@@ -99,16 +106,11 @@ class UI():
         text_from_etry = self.entry_website.get()
         read_from_db = ToSave(data_to_be_added=None)
         data_from_db = read_from_db.read_data()
-        # print(data_from_db.split("\n"))
-
-        for d in data_from_db.split("\n"):
-            if text_from_etry in d or text_from_etry.capitalize() in d or text_from_etry.upper() in d or text_from_etry.lower() in d:
-                d=d.split(" | ")
-                answer = f"Website: {d[0]}\nEmail: {d[1]}\nPassword: {d[2]}"
-                self.popup_window(answer)
-                break
 
 
+        for wb_names, wb_info in data_from_db.items():
+            if text_from_etry in wb_names or text_from_etry.capitalize() in wb_names or text_from_etry.upper() in wb_names or text_from_etry.lower() in wb_names:
+                self.popup_window(f"Website: {wb_names}\nemail: {wb_info.get('email')}\npassword: {wb_info.get('password')}")
 
 
 new_run=UI()

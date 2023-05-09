@@ -1,4 +1,4 @@
-
+import json
 
 class ToSave():
     def __init__(self, data_to_be_added = None) -> None:
@@ -10,14 +10,18 @@ class ToSave():
 
 
     def read_data(self):
-        with open(".\\data.txt", "r") as data:
-            return(data.read())
+        with open(".\\data.json", "r") as data_file:
+            return(json.load(data_file))
     
     def add_data(self):
-        with open(".\\data.txt", "a") as data:
-            data.write(self.to_add)
-            print("next data is successfully added: ", self.to_add)
+        with open(".\\data.json", "r") as data_file:
+            original_data = json.load(data_file)
+            original_data.update(self.to_add)
+        with open(".\\data.json", "w") as data_file:
+            json.dump(original_data, data_file, indent=4)
+
     
     def delete_all(self):
-        with open(".\\data.txt","w") as data:
-            data.write("")
+        with open(".\\data.txt","w") as data_file:
+            data_file.write("")
+
