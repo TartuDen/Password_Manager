@@ -103,14 +103,20 @@ class UI():
         saveClass.add_data()
     
     def to_search(self):
+        match = False
         text_from_etry = self.entry_website.get()
-        read_from_db = ToSave(data_to_be_added=None)
-        data_from_db = read_from_db.read_data()
-
-
-        for wb_names, wb_info in data_from_db.items():
-            if text_from_etry in wb_names or text_from_etry.capitalize() in wb_names or text_from_etry.upper() in wb_names or text_from_etry.lower() in wb_names:
-                self.popup_window(f"Website: {wb_names}\nemail: {wb_info.get('email')}\npassword: {wb_info.get('password')}")
+        try:
+            read_from_db = ToSave(data_to_be_added=None)
+            data_from_db = read_from_db.read_data()
+        except FileNotFoundError:
+            self.popup_window("the database is empty, add at least one element")
+        else:
+            for wb_names, wb_info in data_from_db.items():
+                if text_from_etry in wb_names or text_from_etry.capitalize() in wb_names or text_from_etry.upper() in wb_names or text_from_etry.lower() in wb_names:
+                    self.popup_window(f"Website: {wb_names}\nemail: {wb_info.get('email')}\npassword: {wb_info.get('password')}")
+                    match = True
+        if not match:
+            self.popup_window("No such website.")
 
 
 new_run=UI()

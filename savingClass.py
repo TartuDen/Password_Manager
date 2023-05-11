@@ -6,22 +6,24 @@ class ToSave():
         if type(self.to_add) == type(""):
             if "\n" not in self.to_add:
                 self.to_add+="\n"
-        self.read_data()
+        # self.read_data()
 
 
     def read_data(self):
         with open(".\\data.json", "r") as data_file:
             return(json.load(data_file))
+
     
     def add_data(self):
-        with open(".\\data.json", "r") as data_file:
-            original_data = json.load(data_file)
-            original_data.update(self.to_add)
-        with open(".\\data.json", "w") as data_file:
-            json.dump(original_data, data_file, indent=4)
+        try:
+            with open(".\\data.json", "r") as data_file:
+                original_data = json.load(data_file)
+                original_data.update(self.to_add)
+            with open(".\\data.json", "w") as data_file:
+                json.dump(original_data, data_file, indent=4)
 
-    
-    def delete_all(self):
-        with open(".\\data.txt","w") as data_file:
-            data_file.write("")
-
+        except FileNotFoundError:
+            with open(".\\data.json", "w") as data_file:
+                original_data = json.dump(self.to_add,data_file, indent=4)
+            
+        
